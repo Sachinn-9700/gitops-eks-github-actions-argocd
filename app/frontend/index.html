@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AutoScale Shop</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background-color: #f5f6fa;
+      color: #333;
+    }
+
+    /* NAVBAR */
+    nav {
+      background: #0a2540;
+      color: white;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav h1 {
+      font-size: 22px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      opacity: 0.9;
+    }
+
+    nav a:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(to right, #0a2540, #133d6f);
+      color: white;
+      padding: 60px 32px;
+      text-align: center;
+    }
+
+    .hero h2 {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    main {
+      padding: 32px;
+    }
+
+    .status {
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: green;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product img {
+      height: 160px;
+      object-fit: cover;
+      margin-bottom: 12px;
+      border-radius: 4px;
+    }
+
+    .product h3 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .product p {
+      font-size: 14px;
+      color: #555;
+      flex-grow: 1;
+    }
+
+    .tag {
+      display: inline-block;
+      background: #eef1f6;
+      color: #555;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      width: fit-content;
+    }
+
+    .product button {
+      margin-top: 12px;
+      padding: 10px;
+      border: none;
+      background: #0a2540;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .product button:hover {
+      background: #133d6f;
+    }
+
+    footer {
+      margin-top: 40px;
+      padding: 20px;
+      text-align: center;
+      background: #fff;
+      font-size: 13px;
+      color: #777;
+    }
+
+    .cart {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #0a2540;
+      color: white;
+      padding: 14px 18px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <h1>🛒 AutoScale Shop</h1>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="https://github.com/your-repo-link" target="_blank">GitHub</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Cloud-Native E-Commerce Platform</h2>
+    <p>Auto-scaling on AWS EKS • GitOps with ArgoCD • CI/CD Enabled</p>
+  </section>
+
+  <main>
+    <div class="status" id="backend-status">🟢 Backend Connected</div>
+
+    <h2 style="margin-bottom: 20px;">Featured Products</h2>
+    <div class="products" id="product-list"></div>
+  </main>
+
+  <div class="cart" onclick="viewCart()">
+    Cart (<span id="cart-count">0</span>)
+  </div>
+
+  <footer>
+    © 2026 AutoScale Shop |
+    Kubernetes • Terraform • GitHub Actions • ArgoCD
+  </footer>
+
+  <script>
+    const API_BASE = "/api";
+    let cartCount = 0;
+
+    async function loadProducts() {
+      try {
+        const res = await fetch(`${API_BASE}/products`);
+        const products = await res.json();
+
+        const container = document.getElementById("product-list");
+        container.innerHTML = "";
+
+        products.forEach(product => {
+          const div = document.createElement("div");
+          div.className = "product";
+
+          div.innerHTML = `
+            <span class="tag">${product.category || "General"}</span>
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <strong>₹${product.price}</strong>
+            <button onclick="addToCart('${product.id}')">Add to Cart</button>
+          `;
+
+          container.appendChild(div);
+        });
+      } catch (err) {
+        document.getElementById("backend-status").innerText =
+          "🔴 Backend Unreachable";
+        document.getElementById("backend-status").style.color = "red";
+      }
+    }
+
+    async function addToCart(productId) {
+      await fetch(`${API_BASE}/cart`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product_id: productId })
+      });
+
+      cartCount++;
+      document.getElementById("cart-count").innerText = cartCount;
+    }
+
+    function viewCart() {
+      alert("Cart service handled by backend microservice 🚀");
+    }
+
+    loadProducts();
+  </script>
+
+</body>
+</html>

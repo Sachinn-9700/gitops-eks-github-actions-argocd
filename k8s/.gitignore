@@ -1,0 +1,13 @@
+# Terraform state files
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform/
+
+# Terraform lock file (optional)
+terraform/.terraform.lock.hcl
+
+# PEM / SSH keys
+*.pem
+
+# OS files
+.DS_Store
