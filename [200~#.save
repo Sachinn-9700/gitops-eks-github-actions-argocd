@@ -1,0 +1,10 @@
+.terraform/
+*.tfstate
+*.tfstate.backup
+
+# Sensitive files
+*.pem
+*.key
+
+# OS
+.DS_Store
