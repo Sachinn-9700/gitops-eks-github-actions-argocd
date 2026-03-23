@@ -5,7 +5,7 @@ metadata:
   namespace: ecommerce
   labels:
     app: backend
-
+    
 spec:
   selector:
     app: backend
@@ -13,5 +13,4 @@ spec:
     - name: http
       port: 5000
       targetPort: 5000
-  type: ClusterIP
-
+  type: NodePort

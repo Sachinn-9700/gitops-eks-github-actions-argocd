@@ -21,7 +21,8 @@ spec:
     spec:
       containers:
         - name: backend
-          image: sachinn9700/ecommerce-backend:latest
+          image: ecommerce-backend:local
+          imagePullPolicy: Never
           ports:
             - containerPort: 5000
           resources:
@@ -32,4 +33,3 @@ spec:
               cpu: "500m"
               memory: "256Mi"
 
-              

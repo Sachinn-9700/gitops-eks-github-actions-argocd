@@ -82,6 +82,15 @@ PRODUCTS = [
 # Routes
 # ------------------------
 
+@app.route("/", methods=["GET"])
+def home():
+    REQUEST_COUNT.labels("GET", "/", 200).inc()
+    return jsonify({
+        "message": "Backend is running 🚀",
+        "version": APP_VERSION
+    }), 200
+
+
 @app.route("/health", methods=["GET"])
 def health():
     REQUEST_COUNT.labels("GET", "/health", 200).inc()
@@ -93,6 +102,7 @@ def health():
 
 @app.route("/version", methods=["GET"])
 def version():
+    REQUEST_COUNT.labels("GET", "/version", 200).inc()
     return jsonify({
         "app": "auto-scaling-ecommerce-backend",
         "version": APP_VERSION
@@ -146,3 +156,4 @@ def burn_cpu():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+    

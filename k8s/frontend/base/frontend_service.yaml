@@ -5,11 +5,11 @@ metadata:
   namespace: ecommerce
   labels:
     app: frontend
-    
+
 spec:
   selector:
     app: frontend
   ports:
     - port: 80
       targetPort: 80
-  type: LoadBalancer
+  type: NodePort
