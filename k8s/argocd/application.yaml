@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: ecommerce
+  name: ecommerce-app
   namespace: argocd
 
 spec:
@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/Sachinn-9700/gitops-eks-github-actions-argocd.git
     targetRevision: HEAD
-    path: k8s
+    path: k8s/argocd
 
   destination:
     server: https://kubernetes.default.svc
@@ -22,4 +22,4 @@ spec:
       selfHeal: true
 
     syncOptions:
-      - CreateNamespace=true
+      - CreateNamespace=true  
