@@ -1,5 +1,6 @@
 # 🚀 GitOps-Based Deployment on AWS EKS
 
+
 **Auto-Scaling E-Commerce Application**
 
 ---
@@ -76,4 +77,3 @@ The focus of this project is not feature-rich application logic, but **infrastru
 This project helped me transition from **operational support thinking** to **deployment and platform thinking**, strengthening my understanding of how DevOps decisions impact reliability, scalability, and delivery speed.
 
 ---
-
