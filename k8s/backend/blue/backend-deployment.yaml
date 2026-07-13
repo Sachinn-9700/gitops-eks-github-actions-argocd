@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: sachinn9700/ecommerce-backend:4a1d361
+          image: sachinn9700/ecommerce-backend:3170cda
           imagePullPolicy: Never
           ports:
             - containerPort: 5000
